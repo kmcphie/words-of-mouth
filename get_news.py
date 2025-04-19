@@ -1,4 +1,5 @@
 import requests
+from newspaper import Article
 import json
 
 def fetch_top_headlines(api_key, sources=None, country='us', category=None, query=None):
@@ -17,7 +18,6 @@ def fetch_top_headlines(api_key, sources=None, country='us', category=None, quer
     """
     base_url = "https://newsapi.org/v2/top-headlines"
     
-    # Build parameters
     params = {
         "apiKey": api_key
     }
@@ -32,15 +32,32 @@ def fetch_top_headlines(api_key, sources=None, country='us', category=None, quer
     if query:
         params["q"] = query
     
-    # Make the request
     response = requests.get(base_url, params=params)
     
-    # Check if request was successful
     if response.status_code == 200:
         return response.json()
     else:
         print(f"Error: {response.status_code}")
         print(response.text)
+        return None
+
+def scrape_article(url):
+    """
+    Scrape full article content from the URL using newspaper3k
+
+    Parameters:
+    - url: Article URL
+
+    Returns:
+    - Full article text (str) or None on failure
+    """
+    try:
+        article = Article(url)
+        article.download()
+        article.parse()
+        return article.text
+    except Exception as e:
+        print(f"Failed to scrape {url}: {e}")
         return None
 
 def display_headlines(articles):
@@ -51,6 +68,30 @@ def display_headlines(articles):
         print(f"Published: {article['publishedAt']}")
         print(f"Description: {article['description']}")
         print(f"URL: {article['url']}")
+
+def get_articles_with_full_text(articles):
+    """
+    Enrich articles with full scraped content
+
+    Parameters:
+    - articles: List of articles from NewsAPI
+
+    Returns:
+    - List of articles with added 'content' field
+    """
+    enriched_articles = []
+    for article in articles:
+        full_text = scrape_article(article['url'])
+        article_data = {
+            "title": article['title'],
+            "url": article['url'],
+            "publishedAt": article['publishedAt'],
+            "source": article['source']['name'],
+            "description": article['description'],
+            "content": full_text
+        }
+        enriched_articles.append(article_data)
+    return enriched_articles
 
 if __name__ == "__main__":
     # Replace with your actual API key
@@ -65,5 +106,13 @@ if __name__ == "__main__":
         articles = response.get("articles", [])
         print(f"Found {len(articles)} articles")
         display_headlines(articles)
+
+        enriched_articles = get_articles_with_full_text(articles)
+
+        # Save to a JSON file
+        with open("scraped_articles.json", "w", encoding="utf-8") as f:
+            json.dump(enriched_articles, f, ensure_ascii=False, indent=4)
+
+        print("Scraped content saved to scraped_articles.json")
     else:
         print("Failed to fetch news")
