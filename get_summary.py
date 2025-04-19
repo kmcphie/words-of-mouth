@@ -1,6 +1,9 @@
 import anthropic
+from generate_voice import generate_voice
+from elevenlabs import play
 
-def get_summar36475236ef064840a80b1d981724c482    client = anthropic.Anthropic()
+def get_summary(context_category, documents):
+    client = anthropic.Anthropic()
 
     context_category = "Nature"
     documents = """"""
@@ -35,3 +38,10 @@ def get_summar36475236ef064840a80b1d981724c482    client = anthropic.Anthropic()
     print(message.content[0].text) # This prints the text without anything else. 
 
     return message.content[0].text # Returns a string with the summary of the documents. 
+
+def main(context_category, documents):
+    summary_text = get_summary(context_category, documents)
+    audio = generate_voice(summary_text)
+    play(audio)    
+
+
