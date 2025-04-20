@@ -56,9 +56,9 @@
                     <input type="checkbox" :value="cat" x-model="morning.newsCategories" name="morning_news[]" class="mr-1" /> <span x-text="cat"></span>
                   </label>
                 </template>
-              </div>
+              <!-- </div>
               <label class="block mt-2">Detail: <input type="range" name="morning_news_detail" min="0" max="100" class="w-full" /></label>
-            </div>
+            </div> -->
           </div>
 
           <!-- Stocks -->
@@ -68,7 +68,7 @@
             </label>
             <div x-show="morning.stocksEnabled" class="ml-4 mt-2">
               <input name="morning_stocks" type="text" class="w-full border p-2 rounded" placeholder="e.g. AAPL, TSLA" />
-              <label class="block mt-2">Detail: <input type="range" name="morning_stock_detail" min="0" max="100" class="w-full" /></label>
+              <!-- <label class="block mt-2">Detail: <input type="range" name="morning_stock_detail" min="0" max="100" class="w-full" /></label> -->
             </div>
           </div>
 
@@ -130,9 +130,9 @@
                     <input type="checkbox" :value="cat" x-model="evening.newsCategories" name="evening_news[]" class="mr-1" /> <span x-text="cat"></span>
                   </label>
                 </template>
-              </div>
+              <!-- </div>
               <label class="block mt-2">Detail: <input type="range" name="evening_news_detail" min="0" max="100" class="w-full" /></label>
-            </div>
+            </div> -->
           </div>
 
           <!-- Stocks -->
@@ -142,7 +142,7 @@
             </label>
             <div x-show="evening.stocksEnabled" class="ml-4 mt-2">
               <input name="evening_stocks" type="text" class="w-full border p-2 rounded" placeholder="e.g. AAPL, TSLA" />
-              <label class="block mt-2">Detail: <input type="range" name="evening_stock_detail" min="0" max="100" class="w-full" /></label>
+              <!-- <label class="block mt-2">Detail: <input type="range" name="evening_stock_detail" min="0" max="100" class="w-full" /></label> -->
             </div>
           </div>
 
