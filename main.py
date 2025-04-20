@@ -22,7 +22,7 @@ def run_pipeline():
     print(combined_text)
     print("Stocks result:", stocks_result)
     # Generate summary
-
+    # print(news_result)
     summary = get_summary(news_result)
     print(summary)
     full_text = summary + "\n\n" + stocks_result
