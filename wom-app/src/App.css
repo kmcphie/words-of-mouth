@@ -75,6 +75,14 @@ header p {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.stock-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .question {
   font-size: 20px;
   line-height: 1.5;

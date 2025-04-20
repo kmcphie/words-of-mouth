@@ -10,6 +10,22 @@ const ReflectiveQuestionApp = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [customQuestion, setCustomQuestion] = useState("");
   const [customCategory, setCustomCategory] = useState("gratitude");
+  const [stockSummary, setStockSummary] = useState("");
+  
+  // Get stocks info
+  const fetchStockSummary = async () => {
+    try {
+      const response = await fetch("http://localhost:5050/api/stock-summary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: 1 })
+      });
+      const data = await response.json();
+      setStockSummary(data.stock_summary);
+    } catch (error) {
+      console.error("Failed to fetch stock summary:", error);
+    }
+  };
   
   // Generate a new question
   const generateNewQuestion = () => {
@@ -20,6 +36,7 @@ const ReflectiveQuestionApp = () => {
   const startBrushing = () => {
     setIsBrushing(true);
     setBrushingTime(0);
+    fetchStockSummary();
     generateNewQuestion();
   };
   
@@ -104,6 +121,11 @@ const ReflectiveQuestionApp = () => {
           <div className="brushing-section">
             <div className="timer">
               <span>{Math.floor(brushingTime / 60)}:{(brushingTime % 60).toString().padStart(2, '0')}</span>
+            </div>
+
+            <div className="stock-card">
+              <h2>Stock Market Update</h2>
+              <p className="stock-summary">{stockSummary || "Loading stock update..."}</p>
             </div>
             
             <div className="reflection-card">
