@@ -9,4 +9,4 @@ When brushing teeth in the morning, you could get a personalized recap of import
 When brushing teeth in the evening, you could get a prompt to reflect on your day, listen to a short voice memo submitted by a friend, or review the tasks you were able to accomplish that day.
 
 # Team
-This project was created for the Harvard WiCS x Anthropic Hackathon, April 2025. Team members: Aida Baradari, Katherine McPhie, Lizzy Brahin, Michael Pocress, and Peggy Yin.
+This project was created for the Harvard WiCS x Anthropic Hackathon, April 2025. Team members: Aida Baradari, Lizzy Brahin, Katherine McPhie, Michael Pocress, and Peggy Yin.
