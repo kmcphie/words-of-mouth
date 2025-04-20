@@ -5,15 +5,15 @@ import os
 
 def get_summary(documents):
     client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-
+    print("THESE ARE THE DOCUMENTS: ", documents)
     context_category = "News documents and Stock documents"
     # documents = """"""
     message = client.messages.create(
         model="claude-3-7-sonnet-20250219",
         max_tokens=1000,
-        temperature=1,
+        temperature=0.5,
         # system="You are a world-class poet. Respond only with short poems.",
-        system="You are curating a 1-min long summary of the following documents about {context_category}. Do so in an easy way to understand and in full-text.",
+        system="You are curating a 1-min long summary of the following documents. ONLY GENERATE BASED ON THE CONTEXT. THIS IS THE CONTEXT: {documents}. Use the documents to make a 1 minute news summary of the documents in an easily digestible and informational way. Make it sound like you are basically reading off the news. Do so in an easy way to understand and in full-text.",
         messages=[
             {
                 "role": "user",
