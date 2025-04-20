@@ -1,8 +1,8 @@
 from elevenlabs.client import ElevenLabs
 from elevenlabs import play
 
-# summary_text = """
-# This rug is objectively better. You have to rely on the fuzzy illegible nuances."""
+summary_text = """
+Books loved anyone who opened them, they gave you security and friendship and didn't ask for anything in return; they never went away, never, not even when you treated them badly. Love, truth, beauty, wisdom and consolation against death. Who had said that? Someone else who loved books."""
 
 voices = {
 }
@@ -23,4 +23,4 @@ def generate_voice(summary_text):
 
     return audio
 
-# generate_voice(summary_text)
+generate_voice(summary_text)
