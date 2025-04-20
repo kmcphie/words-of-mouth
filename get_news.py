@@ -93,7 +93,7 @@ def get_articles_with_full_text(articles):
         enriched_articles.append(article_data)
     return enriched_articles
 
-if __name__ == "__main__":
+def get_news():
     # Replace with your actual API key
     API_KEY = "36475236ef064840a80b1d981724c482"
     
