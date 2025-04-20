@@ -6,29 +6,45 @@ import concurrent.futures
 from elevenlabs import play
 
 # We are going to put everything into a main function now
-def run_pipeline():
+def run_pipeline(user_data=None):
+    # Extracting the information from the user data
+    name = user_data.get('name')
+    pronouns = user_data.get('pronouns')
+    reflection = user_data.get('reflection')
+    age = user_data.get('age')
+    timestamp = user_data.get('timestamp')
+
+    # Extract nested morning routine info
+    morning = user_data.get('morning', {})
+    ritual = morning.get('ritual')
+    reminders = morning.get('reminders')
+    stocks = morning.get('stocks', '').split(',') if morning.get('stocks') else []
+    stock_detail = morning.get('stock_detail')
+    news = morning.get('news')
+    news_detail = morning.get('news_detail')
+    tone = morning.get('tone')
+    wisdom = morning.get('wisdom')
+
     # Run news and stocks in parallel
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        stocks_future = executor.submit(prepare_morning_content)
-
-        news_future = executor.submit(lambda: get_news_text('business'))
-
+        stocks_future = executor.submit(lambda: prepare_morning_content(stocks))
+        news_future = executor.submit(lambda: get_news_text(news))
 
         news_result = news_future.result()
         stocks_result = stocks_future.result()
 
     # Combine the results
     combined_text = f"{news_result}\n\n{stocks_result}"
-    print(combined_text)
-    print("Stocks result:", stocks_result)
+    # print(combined_text)
+    # print("Stocks result:", stocks_result)
     # Generate summary
-    # print(news_result)
-    summary = get_summary(news_result)
-    print(summary)
+    print(news_result)
+    summary = get_summary(news_result, name=name)
+    # print(summary)
     full_text = summary + "\n\n" + stocks_result
 
     # Generate voice
-    audio_path = generate_voice(full_text)
+    audio_path = generate_voice(full_text, tone)
     play(audio_path)
 
     # return audio_path, summary

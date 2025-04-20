@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, redirect
 import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime
-
+import sys
+sys.path.append('..')
+from main import run_pipeline
 # Initialize Firebase
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
@@ -22,13 +24,13 @@ def handle_submit():
         'age': request.form.get('age'),
         'reflection': request.form.get('reflection'),
         'morning': {
-            'news': request.form.getlist('morning_news[]'),
+            'news': request.form.getlist('morning_news[]'), # This is in a list
             'news_detail': request.form.get('morning_news_detail'),
-            'stocks': request.form.get('morning_stocks'),
+            'stocks': request.form.get('morning_stocks'), # This is a string
             'stock_detail': request.form.get('morning_stock_detail'),
             'wisdom': request.form.get('morning_wisdom'),
             'tone': request.form.get('morning_tone'),
-            'reminders': request.form.get('morning_reminders'),
+            'reminders': request.form.get('morning_reminders'), 
             'ritual': request.form.get('morning_ritual')
         },
         # },
@@ -89,4 +91,13 @@ def latest_user():
 @app.route('/next', methods=['POST'])
 def next_step():
     # insert the code to run the audio
-    return "done"
+    users_ref = db.collection('users').order_by('timestamp', direction=firestore.Query.DESCENDING).limit(1)
+    docs = users_ref.stream()
+    latest_doc = next(docs, None)
+
+    if latest_doc:
+        user_data = latest_doc.to_dict()
+        run_pipeline(user_data) # This runs the main pipeline with the user data
+        return "loading audio..."
+    else:
+        return "No users found."

@@ -2,6 +2,7 @@ import requests
 from newspaper import Article, Config
 import json
 import time
+import os
 
 # Categories to fetch from NewsAPI
 CATEGORIES = ['business', 'entertainment', 'health', 'science', 'sports', 'technology']
@@ -13,7 +14,6 @@ BLOCKED_DOMAINS = [
     "9news.com", "thestreet.com", "penncapital-star.com"
 ]
 
-
 # Set up a user-agent to mimic a browser
 user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0 Safari/537.36'
 config = Config()
@@ -21,9 +21,6 @@ config.browser_user_agent = user_agent
 config.request_timeout = 10
 
 def fetch_top_headlines(api_key, category, country='us'):
-    """
-    Fetch top headlines for a specific category from NewsAPI.org
-    """
     base_url = "https://newsapi.org/v2/top-headlines"
     params = {
         "apiKey": api_key,
@@ -41,15 +38,9 @@ def fetch_top_headlines(api_key, category, country='us'):
         return None
 
 def should_skip(url):
-    """
-    Return True if the URL is from a known blocked domain
-    """
     return any(blocked in url for blocked in BLOCKED_DOMAINS)
 
 def scrape_article(url):
-    """
-    Scrape full article content from the URL using newspaper3k
-    """
     try:
         article = Article(url, config=config)
         article.download()
@@ -60,9 +51,6 @@ def scrape_article(url):
         return None
 
 def enrich_articles(articles, failed_scrapes):
-    """
-    Add full article text to each article in the list, track failures
-    """
     enriched = []
     for article in articles:
         url = article.get("url")
@@ -87,7 +75,6 @@ def enrich_articles(articles, failed_scrapes):
     return enriched
 
 def scrape_news():
-    
     API_KEY = "36475236ef064840a80b1d981724c482"
 
     all_articles_by_category = {}
@@ -113,11 +100,9 @@ def scrape_news():
                 "status_code": response.get("status") if response else "no response"
             })
 
-    # Save successful results
     with open("clustered_articles_by_category.json", "w", encoding="utf-8") as f:
         json.dump(all_articles_by_category, f, ensure_ascii=False, indent=4)
 
-    # Save failed scrapes
     with open("failed_scrapes.json", "w", encoding="utf-8") as f:
         json.dump(failed_scrapes, f, ensure_ascii=False, indent=4)
 
@@ -126,36 +111,46 @@ def scrape_news():
 
 def get_news(category=None):
     """
-    Get news articles for a specific category or all categories
+    Load previously scraped news from JSON.
     """
-    scrape_news()  # Ensure the latest articles are scraped 
+    if not os.path.exists("clustered_articles_by_category.json"):
+        raise FileNotFoundError("The news data file does not exist. Run scrape_news() first.")
+
+    with open("clustered_articles_by_category.json", "r", encoding="utf-8") as f:
+        all_articles_by_category = json.load(f)
+
     if category:
-        with open("clustered_articles_by_category.json", "r", encoding="utf-8") as f:
-            all_articles_by_category = json.load(f)
-        return all_articles_by_category.get(category, [])
-    else:
-        with open("clustered_articles_by_category.json", "r", encoding="utf-8") as f:
-            all_articles_by_category = json.load(f)
-        return all_articles_by_category
+        if isinstance(category, list):
+            return {cat: all_articles_by_category.get(cat, []) for cat in category}
+        else:
+            return all_articles_by_category.get(category, [])
     return all_articles_by_category
 
-def get_news_text(category=None, max_articles=5):
+def get_news_text(category=None, max_articles=2):
     """
-    Returns just the content of the scraped news articles for summarization.
+    Returns the text content of the first `max_articles` news articles for each category.
     """
+    print(category)
     articles_by_category = get_news(category)
     output_lines = []
 
     if category:
-        # Handle single category
-        for article in articles_by_category[:max_articles]:
-            content = article.get("content", "")
-            output_lines.append(content)
+        if isinstance(articles_by_category, dict):  # category is a list
+            for cat, articles in articles_by_category.items():
+                for article in articles[:max_articles]:
+                    content = article.get("content", "")
+                    if content:
+                        output_lines.append(content)
+        elif isinstance(articles_by_category, list):  # single category
+            for article in articles_by_category[:max_articles]:
+                content = article.get("content", "")
+                if content:
+                    output_lines.append(content)
     else:
-        # Handle all categories
         for cat, articles in articles_by_category.items():
             for article in articles[:max_articles]:
                 content = article.get("content", "")
-                output_lines.append(content)
-
+                if content:
+                    output_lines.append(content)
+    print("Output lines: ", output_lines)
     return "\n\n".join(output_lines)

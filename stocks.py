@@ -90,8 +90,12 @@ def generate_stock_summary(stock_data, user_preferences):
     except Exception as e:
         print("Error from Claude:", e)
         return "Error generating stock summary."
-
-def prepare_morning_content():
+detail = {
+            "detail_level": "brief",
+            "interests": "price and daily change",
+            "tone": "casual"
+        }
+def prepare_morning_content(stock_symbols, detail=detail):
     # Get user preferences from database
     user = get_user_data()
     stock_symbols = user['followed_stocks']
