@@ -40,9 +40,11 @@ def handle_submit():
             'reminders': request.form.get('evening_reminders'),
             'ritual': request.form.get('evening_ritual')
         }
+        'timestamp': datetime.utcnow()
     }
 
     db.collection('users').document().set(data)
+
     return redirect('/success')
 
 @app.route('/success')
@@ -73,4 +75,25 @@ def success():
 @app.route('/next', methods=['POST'])
 def next_step():
     # Replace this with real logic later
-    return "<h2>This is the next step placeholder 🚀</h2>"
+    user_data = session.get('last_user_data')
+
+    if not user_data:
+        return "<h2>No user data found in session.</h2>"
+
+    name = user_data.get('name')
+    tone = user_data.get('morning', {}).get('tone')
+    wisdom = user_data.get('morning', {}).get('wisdom')
+
+    return f"<h2>Welcome, {name}! Your tone is set to '{tone}', and your wisdom mode is '{wisdom}'.</h2>"
+
+@app.route('/latest')
+def latest_user():
+    users_ref = db.collection('users').order_by('timestamp', direction=firestore.Query.DESCENDING).limit(1)
+    docs = users_ref.stream()
+    latest_doc = next(docs, None)
+
+    if latest_doc:
+        user_data = latest_doc.to_dict()
+        return f"<pre>{user_data}</pre>"
+    else:
+        return "No users found."
