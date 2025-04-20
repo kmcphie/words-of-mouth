@@ -20,7 +20,7 @@ def get_summary(documents):
                 "content": [
                     {
                         "type": "text",
-                        "text": """Use the context to make a 2 minute reading summary of the documents in an easily digestible and informational way. 
+                        "text": """Use the context to make a 1 minute news summary of the documents in an easily digestible and informational way. Make it sound like you are basically reading off the news. 
                         <documents>
                         <document>
                             <title>{context_category}</title>
