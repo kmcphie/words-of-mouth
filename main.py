@@ -11,7 +11,8 @@ def run_pipeline():
     with concurrent.futures.ThreadPoolExecutor() as executor:
         stocks_future = executor.submit(prepare_morning_content)
 
-        news_future = executor.submit(get_news_text('business'))
+        news_future = executor.submit(lambda: get_news_text('business'))
+
 
         news_result = news_future.result()
         stocks_result = stocks_future.result()
@@ -21,7 +22,7 @@ def run_pipeline():
     print(combined_text)
     print("Stocks result:", stocks_result)
     # Generate summary
-    
+
     summary = get_summary(news_result)
     print(summary)
     full_text = summary + "\n\n" + stocks_result

@@ -1,9 +1,10 @@
 import anthropic
 from generate_voice import generate_voice
 from elevenlabs import play
+import os
 
 def get_summary(documents):
-    client = anthropic.Anthropic()
+    client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
     context_category = "News documents and Stock documents"
     # documents = """"""
@@ -18,16 +19,15 @@ def get_summary(documents):
                 "role": "user",
                 "content": [
                     {
-                        "Context":f"""
+                        "type": "text",
+                        "text": """Use the context to make a 2 minute reading summary of the documents in an easily digestible and informational way. 
                         <documents>
                         <document>
                             <title>{context_category}</title>
                             <content>{documents}</content>
                         </document>
                         
-                        """,
-                        "type": "text",
-                        "text": "Use the context to make a 2 minute reading summary of the documents in an easily digestible and informational way."
+                        """
                     }
                 ]
             }
@@ -39,7 +39,10 @@ def get_summary(documents):
 
     return message.content[0].text # Returns a string with the summary of the documents. 
 
-# def main(context_category, documents):
-#     summary_text = get_summary(context_category, documents)
+
+def main(documents):
+    summary_text = get_summary(documents)
 #     audio = generate_voice(summary_text)
 #     play(audio)    
+# tet = "HeLLO, can you plesae alksdjflakjdflaskdjf work!"
+# main(tet)
