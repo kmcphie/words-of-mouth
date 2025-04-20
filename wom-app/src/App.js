@@ -75,13 +75,25 @@ const ReflectiveQuestionApp = () => {
   return (
     <div className="app-container">
       <header>
-        <h1>Word of Mouth: Your Talking Toothbrush</h1>
+        <h1>Words of Mouth: Your Talking Toothbrush</h1>
         <p>Take Care of Your Mental and Your Dental Health!</p>
       </header>
       
       <main>
         {!isBrushing ? (
           <div className="setup-section">
+            <h2>Morning Reflections</h2>
+            <p>Ready to brush your teeth and get your day off to a great start?</p>
+            <button className="primary-button" onClick={startBrushing}>
+              Start Brushing
+            </button>
+            <button 
+              className="secondary-button" 
+              onClick={() => setShowSettings(!showSettings)}
+            >
+              {showSettings ? "Hide Settings" : "Show Settings"}
+            </button>
+
             <h2>Evening Reflections</h2>
             <p>Ready to brush your teeth and reflect on your day?</p>
             <button className="primary-button" onClick={startBrushing}>
