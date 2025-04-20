@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import firebase_admin
 from firebase_admin import credentials, firestore
+from datetime import datetime
 
 # Initialize Firebase
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -30,16 +31,17 @@ def handle_submit():
             'reminders': request.form.get('morning_reminders'),
             'ritual': request.form.get('morning_ritual')
         },
-        'evening': {
-            'news': request.form.getlist('evening_news[]'),
-            'news_detail': request.form.get('evening_news_detail'),
-            'stocks': request.form.get('evening_stocks'),
-            'stock_detail': request.form.get('evening_stock_detail'),
-            'wisdom': request.form.get('evening_wisdom'),
-            'tone': request.form.get('evening_tone'),
-            'reminders': request.form.get('evening_reminders'),
-            'ritual': request.form.get('evening_ritual')
-        }
+        # },
+        # 'evening': {
+        #     'news': request.form.getlist('evening_news[]'),
+        #     'news_detail': request.form.get('evening_news_detail'),
+        #     'stocks': request.form.get('evening_stocks'),
+        #     'stock_detail': request.form.get('evening_stock_detail'),
+        #     'wisdom': request.form.get('evening_wisdom'),
+        #     'tone': request.form.get('evening_tone'),
+        #     'reminders': request.form.get('evening_reminders'),
+        #     'ritual': request.form.get('evening_ritual')
+        # }
         'timestamp': datetime.utcnow()
     }
 

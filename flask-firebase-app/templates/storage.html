@@ -1,0 +1,73 @@
+Evening Settings
+<div>
+  <h2 class="text-xl font-semibold mb-2">🌙 Evening Brushing Settings</h2>
+  <div class="space-y-4">
+    <!-- News -->
+    <div>
+      <label class="flex items-center">
+        <input type="checkbox" x-model="evening.newsEnabled" class="mr-2" /> News
+      </label>
+      <div x-show="evening.newsEnabled" class="ml-4 space-y-2 mt-2">
+        <div class="grid grid-cols-2 gap-2">
+          <template x-for="cat in newsCategories" :key="cat">
+            <label>
+              <input type="checkbox" :value="cat" x-model="evening.newsCategories" name="evening_news[]" class="mr-1" /> <span x-text="cat"></span>
+            </label>
+          </template>
+        <!-- </div>
+        <label class="block mt-2">Detail: <input type="range" name="evening_news_detail" min="0" max="100" class="w-full" /></label>
+      </div> -->
+    </div>
+
+    <!-- Stocks -->
+    <div>
+      <label class="flex items-center">
+        <input type="checkbox" x-model="evening.stocksEnabled" class="mr-2" /> Stocks
+      </label>
+      <div x-show="evening.stocksEnabled" class="ml-4 mt-2">
+        <input name="evening_stocks" type="text" class="w-full border p-2 rounded" placeholder="e.g. AAPL, TSLA" />
+        <!-- <label class="block mt-2">Detail: <input type="range" name="evening_stock_detail" min="0" max="100" class="w-full" /></label> -->
+      </div>
+    </div>
+
+    <!-- Words of Wisdom -->
+    <div>
+      <label class="block">Words of Wisdom</label>
+      <select name="evening_wisdom" class="w-full border p-2 rounded">
+        <option value="none">none</option>
+        <option>affirming</option>
+        <option>challenging</option>
+        <option>insightful</option>
+        <option>existential</option>
+      </select>
+    </div>
+
+    <!-- Tone -->
+    <div>
+      <label class="block">Preferred Tone</label>
+      <select name="evening_tone" class="w-full border p-2 rounded">
+        <option>casual</option>
+        <option>professional</option>
+        <option>poetic</option>
+      </select>
+    </div>
+
+    <!-- Reminders -->
+    <div>
+      <label class="block font-medium mt-4">Reminders</label>
+      <input name="evening_reminders" type="text" placeholder="e.g. Reflect on the day" class="w-full border p-2 rounded" />
+    </div>
+
+    <!-- Ritual -->
+    <div>
+      <label class="block font-medium mt-4">Ritual</label>
+      <select name="evening_ritual" class="w-full border p-2 rounded">
+        <option value="none">none</option>
+        <option value="gratitude">gratitude</option>
+        <option value="meditation">learning</option>
+        <option value="savoring">wellbeing</option>
+        <option value="intention-setting">values</option>
+      </select>
+    </div>
+  </div>
+</div>
