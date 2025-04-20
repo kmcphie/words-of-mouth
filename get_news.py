@@ -141,25 +141,21 @@ def get_news(category=None):
 
 def get_news_text(category=None, max_articles=5):
     """
-    Returns a plain text version of the scraped news for summarization.
+    Returns just the content of the scraped news articles for summarization.
     """
     articles_by_category = get_news(category)
     output_lines = []
 
     if category:
         # Handle single category
-        output_lines.append(f"\n📰 Category: {category.upper()}")
-        for i, article in enumerate(articles_by_category[:max_articles]):
-            title = article.get("title", "No title")
+        for article in articles_by_category[:max_articles]:
             content = article.get("content", "")
-            output_lines.append(f"\n{i+1}. {title}\n{content[:500]}...")  # limit to 500 chars
+            output_lines.append(content)
     else:
         # Handle all categories
         for cat, articles in articles_by_category.items():
-            output_lines.append(f"\n📰 Category: {cat.upper()}")
-            for i, article in enumerate(articles[:max_articles]):
-                title = article.get("title", "No title")
+            for article in articles[:max_articles]:
                 content = article.get("content", "")
-                output_lines.append(f"\n{i+1}. {title}\n{content[:500]}...")  # limit to 500 chars
+                output_lines.append(content)
 
-    return "\n".join(output_lines)
+    return "\n\n".join(output_lines)

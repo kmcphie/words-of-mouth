@@ -10,7 +10,7 @@ voices = {
     "poetic": "XrExE9yKIg1WjnnlVkGX",         # Matilda (friendly narration)
 }
 
-def generate_voice(summary_text, tone):
+def generate_voice(summary_text, tone="casual"):
     client = ElevenLabs(
     api_key="sk_6de134175805bd8b881d471294be8cdaf1f8db73e874faef"  # Replace with your actual API key
     )
