@@ -1,8 +1,12 @@
 from elevenlabs.client import ElevenLabs
 from elevenlabs import play
 
-summary_text = """
-This rug is objectively better. You have to rely on the fuzzy illegible nuances."""
+# summary_text = """
+# This rug is objectively better. You have to rely on the fuzzy illegible nuances."""
+
+voices = {
+}
+
 def generate_voice(summary_text):
     client = ElevenLabs(
     api_key="sk_6de134175805bd8b881d471294be8cdaf1f8db73e874faef"  # Replace with your actual API key

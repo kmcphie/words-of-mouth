@@ -43,5 +43,3 @@ def main(context_category, documents):
     summary_text = get_summary(context_category, documents)
     audio = generate_voice(summary_text)
     play(audio)    
-
-
