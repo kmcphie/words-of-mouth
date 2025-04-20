@@ -67,21 +67,21 @@ def generate_stock_summary(stock_data, user_preferences):
             for s in stock_data
         ])
         prompt = f"""
-        You are a personal finance assistant providing a brief update on stocks.
+        You are a personal finance assistant providing a brief update on stocks. Start your sentence with: "These are your stock updates for the day."
 
         {stock_info}
 
         Preferences:
         - Detail level: {user_preferences['detail_level']}
         - Interests: {user_preferences['interests']}
-        - Tone: {user_preferences['tone']}
+        - Tone: {user_preferences['tone']} 
         """
 
         response = client.messages.create(
             model="claude-3-opus-20240229",
             max_tokens=300,
             temperature=0.7,
-            system="You are a helpful financial assistant.",
+            system="You are a personal finance assistant providing a brief update on stocks. Start your sentence with: 'These are your stock updates for the day.' Talk about the stocks in a way that is easy to understand and that doesn't necessarily cite their tag but rather just the name of the company. Make sure that you make it sound natural, like a human would tell another human these news updates.",
             messages=[{"role": "user", "content": prompt}]
         )
 

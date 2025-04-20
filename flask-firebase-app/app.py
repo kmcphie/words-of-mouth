@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index2.html')
 @app.route('/submit', methods=['POST'])
 def handle_submit():
     data = {
