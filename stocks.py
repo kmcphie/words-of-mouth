@@ -4,6 +4,7 @@ import anthropic
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
+# This function fetches stock data 
 def get_stock_data(symbol):
     url = f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey=ALPHAVANTAGE_API_KEY"
     response = requests.get(url)
@@ -90,9 +91,9 @@ def generate_stock_summary(stock_data, user_preferences):
         print("Error from Claude:", e)
         return "Error generating stock summary."
 
-def prepare_morning_content(user_id):
+def prepare_morning_content():
     # Get user preferences from database
-    user = get_user_data(user_id)
+    user = get_user_data()
     stock_symbols = user['followed_stocks']
     preferences = user['stock_preferences']
     
@@ -103,11 +104,12 @@ def prepare_morning_content(user_id):
     stock_summary = generate_stock_summary(stock_data, preferences)
     
     # Add to morning content queue
-    add_to_morning_briefing(user_id, "stocks", stock_summary)
+    add_to_morning_briefing("stocks", stock_summary)
     
     return stock_summary
 
-def get_user_data(user_id):
+# This is where we add the preferences of the user 
+def get_user_data():
     return {
         "followed_stocks": ["SPY", "AAPL", "GOOGL", "TSLA"],
         "stock_preferences": {
@@ -117,5 +119,5 @@ def get_user_data(user_id):
         }
     }
 
-def add_to_morning_briefing(user_id, section, content):
+def add_to_morning_briefing(section, content):
     print(f"[DEBUG] Added to morning briefing: {section} - {content}")

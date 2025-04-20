@@ -1,2 +1,6 @@
 api_keys.txt 
 /.venv
+flask-firebase-app/serviceAccountKey.json
+serviceAccountKey.json
+/flask-firebase-app/
+__pycache__/
