@@ -11,6 +11,7 @@ const ReflectiveQuestionApp = () => {
   const [customQuestion, setCustomQuestion] = useState("");
   const [customCategory, setCustomCategory] = useState("gratitude");
   const [stockSummary, setStockSummary] = useState("");
+  const [reflectionMode, setReflectionMode] = useState(null); // 'morning' or 'evening'
   
   // Get stocks info
   const fetchStockSummary = async () => {
@@ -33,11 +34,16 @@ const ReflectiveQuestionApp = () => {
   };
   
   // Start brushing session
-  const startBrushing = () => {
+  const startBrushing = (mode) => {
+    setReflectionMode(mode);
     setIsBrushing(true);
     setBrushingTime(0);
-    fetchStockSummary();
-    generateNewQuestion();
+    // Different cases for morning and evening categories
+    if (mode === "morning") {
+      fetchStockSummary();
+    } else if (mode === "evening") {
+      generateNewQuestion();
+    }
   };
   
   // End brushing session
@@ -82,9 +88,9 @@ const ReflectiveQuestionApp = () => {
       <main>
         {!isBrushing ? (
           <div className="setup-section">
-            <h2>Morning Reflections</h2>
+            <h2>Morning Preparations</h2>
             <p>Ready to brush your teeth and get your day off to a great start?</p>
-            <button className="primary-button" onClick={startBrushing}>
+            <button className="primary-button" onClick={() => startBrushing("morning")}>
               Start Brushing
             </button>
             <button 
@@ -96,7 +102,7 @@ const ReflectiveQuestionApp = () => {
 
             <h2>Evening Reflections</h2>
             <p>Ready to brush your teeth and reflect on your day?</p>
-            <button className="primary-button" onClick={startBrushing}>
+            <button className="primary-button" onClick={() => startBrushing("evening")}>
               Start Brushing
             </button>
             <button 
@@ -135,15 +141,47 @@ const ReflectiveQuestionApp = () => {
               <span>{Math.floor(brushingTime / 60)}:{(brushingTime % 60).toString().padStart(2, '0')}</span>
             </div>
 
-            <div className="stock-card">
-              <h2>Stock Market Update</h2>
-              <p className="stock-summary">{stockSummary || "Loading stock update..."}</p>
-            </div>
-            
-            <div className="reflection-card">
-              <h2>Evening Reflection</h2>
-              <p className="question">{currentQuestion}</p>
-            </div>
+            {reflectionMode === "morning" && (
+              <div>
+                <div className="update-card">
+                  <h2>News Update</h2>
+                  <p>{"Personalized news for you!"}</p>
+                </div>
+                <div className="update-card">
+                  <h2>Stock Market Update</h2>
+                  <p className="stock-summary">{stockSummary || "Loading stock update..."}</p>
+                </div>
+                <div className="update-card">
+                  <h2>To Do</h2>
+                  <p>{"Today's important events and reminders."}</p>
+                </div>
+                <div className="update-card">
+                  <h2>News Update</h2>
+                  <p>{"Personalized news for you!"}</p>
+                </div>
+                <div className="update-card">
+                  <h2>Weather</h2>
+                  <p>{"Weather updates so you won't be caught by surprise."}</p>
+                </div>
+              </div>
+            )}
+
+            {reflectionMode === "evening" && (
+              <div>
+                <div className="update-card">
+                  <h2>Evening Reflection</h2>
+                  <p className="question">{currentQuestion}</p>
+                </div>
+                <div className="update-card">
+                  <h2>To Do Recap</h2>
+                  <p>{"How did you do with the things you hoped to get done today?"}</p>
+                </div>
+                <div className="update-card">
+                  <h2>Gratitude</h2>
+                  <p>{"What's one thing you're grateful for today?"}</p>
+                </div>
+              </div>
+            )}
             
             <button className="primary-button" onClick={endBrushing}>
               Finish Brushing
