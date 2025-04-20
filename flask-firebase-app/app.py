@@ -47,4 +47,30 @@ def handle_submit():
 
 @app.route('/success')
 def success():
-    return "<h2>Thanks! Your brushing preferences were saved successfully 🪥✨</h2>"
+    return """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Success</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gray-100 text-gray-900 flex items-center justify-center min-h-screen">
+        <div class="text-center bg-white p-10 rounded-xl shadow-md space-y-6 max-w-md">
+            <h2 class="text-2xl font-semibold">Thanks! 🪥✨</h2>
+            <p class="text-gray-600">Your brushing preferences were saved successfully.</p>
+            <form action="/next" method="post">
+                <button type="submit"
+                        class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">
+                    Next
+                </button>
+            </form>
+        </div>
+    </body>
+    </html>
+    """
+
+@app.route('/next', methods=['POST'])
+def next_step():
+    # Replace this with real logic later
+    return "<h2>This is the next step placeholder 🚀</h2>"
