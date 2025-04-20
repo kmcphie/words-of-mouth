@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import firebase_admin
 from firebase_admin import credentials, firestore
+from datetime import datetime
 
 # Initialize Firebase
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -30,16 +31,17 @@ def handle_submit():
             'reminders': request.form.get('morning_reminders'),
             'ritual': request.form.get('morning_ritual')
         },
-        'evening': {
-            'news': request.form.getlist('evening_news[]'),
-            'news_detail': request.form.get('evening_news_detail'),
-            'stocks': request.form.get('evening_stocks'),
-            'stock_detail': request.form.get('evening_stock_detail'),
-            'wisdom': request.form.get('evening_wisdom'),
-            'tone': request.form.get('evening_tone'),
-            'reminders': request.form.get('evening_reminders'),
-            'ritual': request.form.get('evening_ritual')
-        }
+        # },
+        # 'evening': {
+        #     'news': request.form.getlist('evening_news[]'),
+        #     'news_detail': request.form.get('evening_news_detail'),
+        #     'stocks': request.form.get('evening_stocks'),
+        #     'stock_detail': request.form.get('evening_stock_detail'),
+        #     'wisdom': request.form.get('evening_wisdom'),
+        #     'tone': request.form.get('evening_tone'),
+        #     'reminders': request.form.get('evening_reminders'),
+        #     'ritual': request.form.get('evening_ritual')
+        # }
         'timestamp': datetime.utcnow()
     }
 
@@ -72,20 +74,6 @@ def success():
     </html>
     """
 
-@app.route('/next', methods=['POST'])
-def next_step():
-    # Replace this with real logic later
-    user_data = session.get('last_user_data')
-
-    if not user_data:
-        return "<h2>No user data found in session.</h2>"
-
-    name = user_data.get('name')
-    tone = user_data.get('morning', {}).get('tone')
-    wisdom = user_data.get('morning', {}).get('wisdom')
-
-    return f"<h2>Welcome, {name}! Your tone is set to '{tone}', and your wisdom mode is '{wisdom}'.</h2>"
-
 @app.route('/latest')
 def latest_user():
     users_ref = db.collection('users').order_by('timestamp', direction=firestore.Query.DESCENDING).limit(1)
@@ -97,3 +85,8 @@ def latest_user():
         return f"<pre>{user_data}</pre>"
     else:
         return "No users found."
+
+@app.route('/next', methods=['POST'])
+def next_step():
+    # insert the code to run the audio
+    return "done"
