@@ -13,14 +13,14 @@ def get_summary(documents, name):
         max_tokens=5000,
         temperature=0.5,
         # system="You are a world-class poet. Respond only with short poems.",
-        system=f"You are curating a 1-min long summary of the following documents. ONLY GENERATE BASED ON THE CONTEXT. THIS IS THE CONTEXT: {documents}. Use the documents to make a 1 minute news summary of the documents in an easily digestible and informational way. Make it sound like you are basically reading off the news. Do so in an easy way to understand and in full-text.",
+        system=f"You are curating a 8 sentence long summary of the following documents. ONLY GENERATE BASED ON THE CONTEXT. THIS IS THE CONTEXT: {documents}. Use the documents to make a 1 minute news summary of the documents in an easily digestible and informational way. Make it sound like you are basically reading off the news. Do so in an easy way to understand and in full-text.",
         messages=[
             {
                 "role": "user",
                 "content": [
                     {
                         "type": "text",
-                        "text": f"""Use the documents to make a 1 minute news summary of the documents in an easily digestible and informational way.
+                        "text": f"""Use the documents to make a 8 sentence long summary of the documents in an easily digestible and informational way.
                         At the beginning of the text you are generating, say: "Hello there, {name}."
                         Make it sound like you are basically reading off the news. 
                         DO THIS BASED ON THE DOCUMENTS BELOW AND ONLY ON THE DOCUMENTS. 

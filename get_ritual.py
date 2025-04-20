@@ -17,7 +17,7 @@ def get_ritual(ritual):
                 "content": [
                     {
                         "type": "text",
-                        "text": """Say one sentence pertaining to the request below.
+                        "text": f"""Say one sentence pertaining to the request below.
                         DO THIS BASED ON THE RITUAL BELOW AND ONLY ON THE RITUAL. 
                         This is the request: 
                         {ritual}
